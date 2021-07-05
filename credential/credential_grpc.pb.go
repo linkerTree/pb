@@ -178,3 +178,89 @@ var UserCredentialValidator_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "credential.proto",
 }
+
+// MarkRepeatorClient is the client API for MarkRepeator service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type MarkRepeatorClient interface {
+	RepeateAfterMe(ctx context.Context, in *String, opts ...grpc.CallOption) (*String, error)
+}
+
+type markRepeatorClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewMarkRepeatorClient(cc grpc.ClientConnInterface) MarkRepeatorClient {
+	return &markRepeatorClient{cc}
+}
+
+func (c *markRepeatorClient) RepeateAfterMe(ctx context.Context, in *String, opts ...grpc.CallOption) (*String, error) {
+	out := new(String)
+	err := c.cc.Invoke(ctx, "/credential.MarkRepeator/RepeateAfterMe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// MarkRepeatorServer is the server API for MarkRepeator service.
+// All implementations must embed UnimplementedMarkRepeatorServer
+// for forward compatibility
+type MarkRepeatorServer interface {
+	RepeateAfterMe(context.Context, *String) (*String, error)
+	mustEmbedUnimplementedMarkRepeatorServer()
+}
+
+// UnimplementedMarkRepeatorServer must be embedded to have forward compatible implementations.
+type UnimplementedMarkRepeatorServer struct {
+}
+
+func (UnimplementedMarkRepeatorServer) RepeateAfterMe(context.Context, *String) (*String, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RepeateAfterMe not implemented")
+}
+func (UnimplementedMarkRepeatorServer) mustEmbedUnimplementedMarkRepeatorServer() {}
+
+// UnsafeMarkRepeatorServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MarkRepeatorServer will
+// result in compilation errors.
+type UnsafeMarkRepeatorServer interface {
+	mustEmbedUnimplementedMarkRepeatorServer()
+}
+
+func RegisterMarkRepeatorServer(s grpc.ServiceRegistrar, srv MarkRepeatorServer) {
+	s.RegisterService(&MarkRepeator_ServiceDesc, srv)
+}
+
+func _MarkRepeator_RepeateAfterMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(String)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MarkRepeatorServer).RepeateAfterMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/credential.MarkRepeator/RepeateAfterMe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MarkRepeatorServer).RepeateAfterMe(ctx, req.(*String))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// MarkRepeator_ServiceDesc is the grpc.ServiceDesc for MarkRepeator service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var MarkRepeator_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "credential.MarkRepeator",
+	HandlerType: (*MarkRepeatorServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RepeateAfterMe",
+			Handler:    _MarkRepeator_RepeateAfterMe_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "credential.proto",
+}
