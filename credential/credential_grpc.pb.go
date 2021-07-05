@@ -18,8 +18,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserCredentialValidatorClient interface {
+	// 获取一个public key
 	GetPublicKey(ctx context.Context, in *GetPublicKeyReq, opts ...grpc.CallOption) (*GetPublicKeyRsp, error)
-	ValidateKey(ctx context.Context, in *ValidateKeyReq, opts ...grpc.CallOption) (*ValidateKeyRsp, error)
+	// 尝试登陆的时候来验证密码是否正确
+	ValidatePassWord(ctx context.Context, in *ValidatePassWordReq, opts ...grpc.CallOption) (*ValidatePassWordRsp, error)
+	// 根据session ID检查登陆状态
 	CheckIsLoggingIn(ctx context.Context, in *CheckIsLoggingInReq, opts ...grpc.CallOption) (*CheckIsLoggingInRsp, error)
 }
 
@@ -40,9 +43,9 @@ func (c *userCredentialValidatorClient) GetPublicKey(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *userCredentialValidatorClient) ValidateKey(ctx context.Context, in *ValidateKeyReq, opts ...grpc.CallOption) (*ValidateKeyRsp, error) {
-	out := new(ValidateKeyRsp)
-	err := c.cc.Invoke(ctx, "/credential.UserCredentialValidator/ValidateKey", in, out, opts...)
+func (c *userCredentialValidatorClient) ValidatePassWord(ctx context.Context, in *ValidatePassWordReq, opts ...grpc.CallOption) (*ValidatePassWordRsp, error) {
+	out := new(ValidatePassWordRsp)
+	err := c.cc.Invoke(ctx, "/credential.UserCredentialValidator/ValidatePassWord", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -62,8 +65,11 @@ func (c *userCredentialValidatorClient) CheckIsLoggingIn(ctx context.Context, in
 // All implementations must embed UnimplementedUserCredentialValidatorServer
 // for forward compatibility
 type UserCredentialValidatorServer interface {
+	// 获取一个public key
 	GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error)
-	ValidateKey(context.Context, *ValidateKeyReq) (*ValidateKeyRsp, error)
+	// 尝试登陆的时候来验证密码是否正确
+	ValidatePassWord(context.Context, *ValidatePassWordReq) (*ValidatePassWordRsp, error)
+	// 根据session ID检查登陆状态
 	CheckIsLoggingIn(context.Context, *CheckIsLoggingInReq) (*CheckIsLoggingInRsp, error)
 	mustEmbedUnimplementedUserCredentialValidatorServer()
 }
@@ -75,8 +81,8 @@ type UnimplementedUserCredentialValidatorServer struct {
 func (UnimplementedUserCredentialValidatorServer) GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPublicKey not implemented")
 }
-func (UnimplementedUserCredentialValidatorServer) ValidateKey(context.Context, *ValidateKeyReq) (*ValidateKeyRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateKey not implemented")
+func (UnimplementedUserCredentialValidatorServer) ValidatePassWord(context.Context, *ValidatePassWordReq) (*ValidatePassWordRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidatePassWord not implemented")
 }
 func (UnimplementedUserCredentialValidatorServer) CheckIsLoggingIn(context.Context, *CheckIsLoggingInReq) (*CheckIsLoggingInRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckIsLoggingIn not implemented")
@@ -113,20 +119,20 @@ func _UserCredentialValidator_GetPublicKey_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCredentialValidator_ValidateKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ValidateKeyReq)
+func _UserCredentialValidator_ValidatePassWord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidatePassWordReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserCredentialValidatorServer).ValidateKey(ctx, in)
+		return srv.(UserCredentialValidatorServer).ValidatePassWord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/credential.UserCredentialValidator/ValidateKey",
+		FullMethod: "/credential.UserCredentialValidator/ValidatePassWord",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserCredentialValidatorServer).ValidateKey(ctx, req.(*ValidateKeyReq))
+		return srv.(UserCredentialValidatorServer).ValidatePassWord(ctx, req.(*ValidatePassWordReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -161,8 +167,8 @@ var UserCredentialValidator_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserCredentialValidator_GetPublicKey_Handler,
 		},
 		{
-			MethodName: "ValidateKey",
-			Handler:    _UserCredentialValidator_ValidateKey_Handler,
+			MethodName: "ValidatePassWord",
+			Handler:    _UserCredentialValidator_ValidatePassWord_Handler,
 		},
 		{
 			MethodName: "CheckIsLoggingIn",
