@@ -23,13 +23,12 @@ message GeneralCss{
 
 message UserInfo {
   string userID = 1;
-  string email = 2;
-  string mobile = 3;
-  string salt = 4;
-  bytes hashedPasswords = 5;
-  string profileTitle = 6;
-  string avatarUrl = 7;
-  string bgImageUrl = 8;
-  repeated cardLink cardLinks = 9;
-  repeated socialLink socialLinks = 10;
+  bytes hashedPasswords = 2;
+  string email = 3;
+  string mobile = 4;
+  string profileTitle = 5;
+  string avatarUrl = 6;
+  string bgImageUrl = 7;
+  repeated cardLink cardLinks = 8;
+  repeated socialLink socialLinks = 9;
 }
