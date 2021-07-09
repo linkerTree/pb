@@ -6,5 +6,31 @@ option  go_package = "github.com/linkerTree/pb/common_error_code";
 enum ErrorCode {
   ERR_SUCCESS = 0;
 
+  // 注意，我们后端互相传递的error要尽可能地详尽，给前端传递的要尽可能地简洁
 
+  // 后端部分应用，10000 - 19999
+  // redis 10000 - 10099
+  ERR_REDIS = 10001;
+  ERR_REDIS_CANT_FIND = 10002;
+
+  // 提供的信息错误：10100 - 10199
+  // 不存在的Email、手机号、userID
+  ERR_RESOURCE_NOT_AVAILABLE = 10100;
+  // 账号密码不匹配
+  ERR_PASSWORD_INVALID = 10101;
+  // UserID已被占用
+  ERR_USERID_EXIST = 10102;
+
+  // Vcode 10200-10299
+  // VCode不存在
+  ERR_VCODE_NON_EXIST = 10200;
+  // VCode存在但是不属于Email
+  ERR_VCODE_INVALID_OWNER = 10201;
+
+  // Token 10300-10399
+  // Token 不存在
+  ERR_TOKEN = 10300;
+
+
+  // 返回给前端部分，20000 - 29999
 }
