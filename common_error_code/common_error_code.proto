@@ -5,6 +5,7 @@ option  go_package = "github.com/linkerTree/pb/common_error_code";
 
 enum ErrorCode {
   ERR_SUCCESS = 0;
+  ERR_UNKNOWN = 10;
 
   // 注意，我们后端互相传递的error要尽可能地详尽，给前端传递的要尽可能地简洁
 
