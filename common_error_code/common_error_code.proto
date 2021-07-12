@@ -25,6 +25,10 @@ enum ErrorCode {
   ERR_PARAMETER_INCOMPLETE = 10103;
   // 传递过来的密码无法经过私钥解密
   ERR_PARAMETER_HASHED_PASSWORD_INVALID = 10104;
+  // 找不到用户数据
+  ERR_FIND_USER = 10105;
+
+
 
   // Vcode 10200-10299
   // VCode不存在
