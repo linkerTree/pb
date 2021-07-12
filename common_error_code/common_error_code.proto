@@ -22,7 +22,9 @@ enum ErrorCode {
   // UserID已被占用
   ERR_USERID_EXIST = 10102;
   // 传递的参数不合法
-  ERR_PARAMETER = 10103;
+  ERR_PARAMETER_INCOMPLETE = 10103;
+  // 传递过来的密码无法经过私钥解密
+  ERR_PARAMETER_HASHED_PASSWORD_INVALID = 10104;
 
   // Vcode 10200-10299
   // VCode不存在
