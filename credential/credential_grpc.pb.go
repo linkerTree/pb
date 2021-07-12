@@ -21,7 +21,7 @@ type UserCredentialValidatorClient interface {
 	// 获取一个public key
 	GetPublicKey(ctx context.Context, in *GetPublicKeyReq, opts ...grpc.CallOption) (*GetPublicKeyRsp, error)
 	// 尝试登陆的时候来验证密码是否正确
-	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRsp, error)
+	LoginByUserId(ctx context.Context, in *LoginByUserIdReq, opts ...grpc.CallOption) (*LoginByUserIdRsp, error)
 	// 根据session ID检查登陆状态
 	CheckIsLoggingIn(ctx context.Context, in *CheckIsLoggingInReq, opts ...grpc.CallOption) (*CheckIsLoggingInRsp, error)
 	// RegisterUser 用户注册
@@ -45,9 +45,9 @@ func (c *userCredentialValidatorClient) GetPublicKey(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *userCredentialValidatorClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginRsp, error) {
-	out := new(LoginRsp)
-	err := c.cc.Invoke(ctx, "/credential.UserCredentialValidator/Login", in, out, opts...)
+func (c *userCredentialValidatorClient) LoginByUserId(ctx context.Context, in *LoginByUserIdReq, opts ...grpc.CallOption) (*LoginByUserIdRsp, error) {
+	out := new(LoginByUserIdRsp)
+	err := c.cc.Invoke(ctx, "/credential.UserCredentialValidator/LoginByUserId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ type UserCredentialValidatorServer interface {
 	// 获取一个public key
 	GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error)
 	// 尝试登陆的时候来验证密码是否正确
-	Login(context.Context, *LoginReq) (*LoginRsp, error)
+	LoginByUserId(context.Context, *LoginByUserIdReq) (*LoginByUserIdRsp, error)
 	// 根据session ID检查登陆状态
 	CheckIsLoggingIn(context.Context, *CheckIsLoggingInReq) (*CheckIsLoggingInRsp, error)
 	// RegisterUser 用户注册
@@ -94,8 +94,8 @@ type UnimplementedUserCredentialValidatorServer struct {
 func (UnimplementedUserCredentialValidatorServer) GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPublicKey not implemented")
 }
-func (UnimplementedUserCredentialValidatorServer) Login(context.Context, *LoginReq) (*LoginRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedUserCredentialValidatorServer) LoginByUserId(context.Context, *LoginByUserIdReq) (*LoginByUserIdRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginByUserId not implemented")
 }
 func (UnimplementedUserCredentialValidatorServer) CheckIsLoggingIn(context.Context, *CheckIsLoggingInReq) (*CheckIsLoggingInRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckIsLoggingIn not implemented")
@@ -135,20 +135,20 @@ func _UserCredentialValidator_GetPublicKey_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCredentialValidator_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginReq)
+func _UserCredentialValidator_LoginByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginByUserIdReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserCredentialValidatorServer).Login(ctx, in)
+		return srv.(UserCredentialValidatorServer).LoginByUserId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/credential.UserCredentialValidator/Login",
+		FullMethod: "/credential.UserCredentialValidator/LoginByUserId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserCredentialValidatorServer).Login(ctx, req.(*LoginReq))
+		return srv.(UserCredentialValidatorServer).LoginByUserId(ctx, req.(*LoginByUserIdReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -201,8 +201,8 @@ var UserCredentialValidator_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserCredentialValidator_GetPublicKey_Handler,
 		},
 		{
-			MethodName: "Login",
-			Handler:    _UserCredentialValidator_Login_Handler,
+			MethodName: "LoginByUserId",
+			Handler:    _UserCredentialValidator_LoginByUserId_Handler,
 		},
 		{
 			MethodName: "CheckIsLoggingIn",
