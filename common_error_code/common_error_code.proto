@@ -21,6 +21,8 @@ enum ErrorCode {
   ERR_PASSWORD_INVALID = 10101;
   // UserID已被占用
   ERR_USERID_EXIST = 10102;
+  // 传递的参数不合法
+  ERR_PARAMETER = 10103;
 
   // Vcode 10200-10299
   // VCode不存在
