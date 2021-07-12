@@ -30,8 +30,10 @@ enum ErrorCode {
 
   // Token 10300-10399
   // Token 不存在
-  ERR_TOKEN = 10300;
+  ERR_TOKEN_RESET_PWD_NON_EXIST = 10300;
 
+  // 内部错误，比如说服务器、网络连接。被调用方的错误
+  ERR_INTERNAL_FAILURE = 19000;
 
   // 返回给前端部分，20000 - 29999
 }
