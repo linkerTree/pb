@@ -21,8 +21,8 @@ message GeneralCss{
   string fontCss = 2;
 }
 
+// 拿着openId来取
 message UserInfo {
-  string userId = 1;
   bytes hashedPasswords = 2;
   string email = 3;
   string mobile = 4;
@@ -32,3 +32,30 @@ message UserInfo {
   repeated cardLink cardLinks = 8;
   repeated socialLink socialLinks = 9;
 }
+
+
+message userBasicInfo {
+  string openId = 1;
+  string userId = 2;
+}
+
+
+/*
+
+在redis中，我们有如下的数据结构:
+
+普遍的userInfo用KV结构，openId（modified）作为key
+有email，mobile 对于openId的映射，是两个map
+有openId到userId的双向映射，由两个map实现。后期如果需要改userId，也只在这里改就好了
+
+sessionId -> {userId, openId} 必须用kv，因为有过期时间，这里包装成一个struct idInfo，在本proto中定义
+
+vcode -> email, vcode -> mobile, 都是可以过期的kv
+
+ResetPwdToken to openID 用于修改密码，也必须是kv，因为可以过期，也需要被删除（当然，也可以用链表，我觉得有点麻烦）
+注意，ResetPwdToken是我们修改密码的凭证
+
+在redis中,其他都是明文储存,struct要经过proto序列化
+
+
+ */
