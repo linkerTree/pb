@@ -222,11 +222,11 @@ var UserCredentialValidator_ServiceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserPasswordRetrieverClient interface {
 	// 需求通过email发送验证码
-	GetVCodeWithEmail(ctx context.Context, in *GetVCodeWithEmailReq, opts ...grpc.CallOption) (*GetVCodeWithEmailRsp, error)
+	GetVcodeWithEmail(ctx context.Context, in *GetVcodeWithEmailReq, opts ...grpc.CallOption) (*GetVcodeWithEmailRsp, error)
 	// 检查验证码是否正确
 	ValidateEmailCode(ctx context.Context, in *ValidateEmailCodeReq, opts ...grpc.CallOption) (*ValidateEmailCodeRsp, error)
 	// 通过mobile发送验证码
-	GetVCodeWithMobile(ctx context.Context, in *GetVCodeWithMobileReq, opts ...grpc.CallOption) (*GetVCodeWithMobileRsp, error)
+	GetVcodeWithMobile(ctx context.Context, in *GetVcodeWithMobileReq, opts ...grpc.CallOption) (*GetVcodeWithMobileRsp, error)
 	// 检查验证码是否正确
 	ValidateMobileCode(ctx context.Context, in *ValidateMobileCodeReq, opts ...grpc.CallOption) (*ValidateMobileCodeRsp, error)
 	// 验证码正确的情况下，重置密码
@@ -241,9 +241,9 @@ func NewUserPasswordRetrieverClient(cc grpc.ClientConnInterface) UserPasswordRet
 	return &userPasswordRetrieverClient{cc}
 }
 
-func (c *userPasswordRetrieverClient) GetVCodeWithEmail(ctx context.Context, in *GetVCodeWithEmailReq, opts ...grpc.CallOption) (*GetVCodeWithEmailRsp, error) {
-	out := new(GetVCodeWithEmailRsp)
-	err := c.cc.Invoke(ctx, "/credential.UserPasswordRetriever/GetVCodeWithEmail", in, out, opts...)
+func (c *userPasswordRetrieverClient) GetVcodeWithEmail(ctx context.Context, in *GetVcodeWithEmailReq, opts ...grpc.CallOption) (*GetVcodeWithEmailRsp, error) {
+	out := new(GetVcodeWithEmailRsp)
+	err := c.cc.Invoke(ctx, "/credential.UserPasswordRetriever/GetVcodeWithEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -259,9 +259,9 @@ func (c *userPasswordRetrieverClient) ValidateEmailCode(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *userPasswordRetrieverClient) GetVCodeWithMobile(ctx context.Context, in *GetVCodeWithMobileReq, opts ...grpc.CallOption) (*GetVCodeWithMobileRsp, error) {
-	out := new(GetVCodeWithMobileRsp)
-	err := c.cc.Invoke(ctx, "/credential.UserPasswordRetriever/GetVCodeWithMobile", in, out, opts...)
+func (c *userPasswordRetrieverClient) GetVcodeWithMobile(ctx context.Context, in *GetVcodeWithMobileReq, opts ...grpc.CallOption) (*GetVcodeWithMobileRsp, error) {
+	out := new(GetVcodeWithMobileRsp)
+	err := c.cc.Invoke(ctx, "/credential.UserPasswordRetriever/GetVcodeWithMobile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -291,11 +291,11 @@ func (c *userPasswordRetrieverClient) ResetPasswordWithToken(ctx context.Context
 // for forward compatibility
 type UserPasswordRetrieverServer interface {
 	// 需求通过email发送验证码
-	GetVCodeWithEmail(context.Context, *GetVCodeWithEmailReq) (*GetVCodeWithEmailRsp, error)
+	GetVcodeWithEmail(context.Context, *GetVcodeWithEmailReq) (*GetVcodeWithEmailRsp, error)
 	// 检查验证码是否正确
 	ValidateEmailCode(context.Context, *ValidateEmailCodeReq) (*ValidateEmailCodeRsp, error)
 	// 通过mobile发送验证码
-	GetVCodeWithMobile(context.Context, *GetVCodeWithMobileReq) (*GetVCodeWithMobileRsp, error)
+	GetVcodeWithMobile(context.Context, *GetVcodeWithMobileReq) (*GetVcodeWithMobileRsp, error)
 	// 检查验证码是否正确
 	ValidateMobileCode(context.Context, *ValidateMobileCodeReq) (*ValidateMobileCodeRsp, error)
 	// 验证码正确的情况下，重置密码
@@ -307,14 +307,14 @@ type UserPasswordRetrieverServer interface {
 type UnimplementedUserPasswordRetrieverServer struct {
 }
 
-func (UnimplementedUserPasswordRetrieverServer) GetVCodeWithEmail(context.Context, *GetVCodeWithEmailReq) (*GetVCodeWithEmailRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVCodeWithEmail not implemented")
+func (UnimplementedUserPasswordRetrieverServer) GetVcodeWithEmail(context.Context, *GetVcodeWithEmailReq) (*GetVcodeWithEmailRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVcodeWithEmail not implemented")
 }
 func (UnimplementedUserPasswordRetrieverServer) ValidateEmailCode(context.Context, *ValidateEmailCodeReq) (*ValidateEmailCodeRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateEmailCode not implemented")
 }
-func (UnimplementedUserPasswordRetrieverServer) GetVCodeWithMobile(context.Context, *GetVCodeWithMobileReq) (*GetVCodeWithMobileRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVCodeWithMobile not implemented")
+func (UnimplementedUserPasswordRetrieverServer) GetVcodeWithMobile(context.Context, *GetVcodeWithMobileReq) (*GetVcodeWithMobileRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVcodeWithMobile not implemented")
 }
 func (UnimplementedUserPasswordRetrieverServer) ValidateMobileCode(context.Context, *ValidateMobileCodeReq) (*ValidateMobileCodeRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateMobileCode not implemented")
@@ -335,20 +335,20 @@ func RegisterUserPasswordRetrieverServer(s grpc.ServiceRegistrar, srv UserPasswo
 	s.RegisterService(&UserPasswordRetriever_ServiceDesc, srv)
 }
 
-func _UserPasswordRetriever_GetVCodeWithEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetVCodeWithEmailReq)
+func _UserPasswordRetriever_GetVcodeWithEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVcodeWithEmailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserPasswordRetrieverServer).GetVCodeWithEmail(ctx, in)
+		return srv.(UserPasswordRetrieverServer).GetVcodeWithEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/credential.UserPasswordRetriever/GetVCodeWithEmail",
+		FullMethod: "/credential.UserPasswordRetriever/GetVcodeWithEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserPasswordRetrieverServer).GetVCodeWithEmail(ctx, req.(*GetVCodeWithEmailReq))
+		return srv.(UserPasswordRetrieverServer).GetVcodeWithEmail(ctx, req.(*GetVcodeWithEmailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -371,20 +371,20 @@ func _UserPasswordRetriever_ValidateEmailCode_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserPasswordRetriever_GetVCodeWithMobile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetVCodeWithMobileReq)
+func _UserPasswordRetriever_GetVcodeWithMobile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVcodeWithMobileReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserPasswordRetrieverServer).GetVCodeWithMobile(ctx, in)
+		return srv.(UserPasswordRetrieverServer).GetVcodeWithMobile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/credential.UserPasswordRetriever/GetVCodeWithMobile",
+		FullMethod: "/credential.UserPasswordRetriever/GetVcodeWithMobile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserPasswordRetrieverServer).GetVCodeWithMobile(ctx, req.(*GetVCodeWithMobileReq))
+		return srv.(UserPasswordRetrieverServer).GetVcodeWithMobile(ctx, req.(*GetVcodeWithMobileReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -433,16 +433,16 @@ var UserPasswordRetriever_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserPasswordRetrieverServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetVCodeWithEmail",
-			Handler:    _UserPasswordRetriever_GetVCodeWithEmail_Handler,
+			MethodName: "GetVcodeWithEmail",
+			Handler:    _UserPasswordRetriever_GetVcodeWithEmail_Handler,
 		},
 		{
 			MethodName: "ValidateEmailCode",
 			Handler:    _UserPasswordRetriever_ValidateEmailCode_Handler,
 		},
 		{
-			MethodName: "GetVCodeWithMobile",
-			Handler:    _UserPasswordRetriever_GetVCodeWithMobile_Handler,
+			MethodName: "GetVcodeWithMobile",
+			Handler:    _UserPasswordRetriever_GetVcodeWithMobile_Handler,
 		},
 		{
 			MethodName: "ValidateMobileCode",
