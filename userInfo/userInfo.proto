@@ -34,7 +34,7 @@ message UserInfo {
 }
 
 
-message userBasicInfo {
+message UserBasicInfo {
   string openId = 1;
   string userId = 2;
 }
