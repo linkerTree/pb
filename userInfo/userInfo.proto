@@ -21,11 +21,15 @@ message GeneralCss{
   string fontCss = 2;
 }
 
-// 拿着openId来取
-message UserInfo {
+// openId做key，可能为UserCredentialInfo:openId:xxx
+message UserCredentialInfo {
   bytes hashedPasswords = 2;
   string email = 3;
   string mobile = 4;
+}
+
+// openId做key，可能为UserProfileInfo:openId:xxx
+message UserProfileInfo {
   string profileTitle = 5;
   string avatarUrl = 6;
   string bgImageUrl = 7;
@@ -33,7 +37,7 @@ message UserInfo {
   repeated socialLink socialLinks = 9;
 }
 
-
+// 主要用在token，sessionId对应的地方
 message UserBasicInfo {
   string openId = 1;
   string userId = 2;
