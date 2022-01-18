@@ -18,8 +18,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserCredentialValidatorClient interface {
-	// 获取一个public key
-	GetPublicKey(ctx context.Context, in *GetPublicKeyReq, opts ...grpc.CallOption) (*GetPublicKeyRsp, error)
 	// 尝试登陆的时候来验证密码是否正确
 	LoginByUserId(ctx context.Context, in *LoginByUserIdReq, opts ...grpc.CallOption) (*LoginByUserIdRsp, error)
 	// 根据session ID检查登陆状态
@@ -34,15 +32,6 @@ type userCredentialValidatorClient struct {
 
 func NewUserCredentialValidatorClient(cc grpc.ClientConnInterface) UserCredentialValidatorClient {
 	return &userCredentialValidatorClient{cc}
-}
-
-func (c *userCredentialValidatorClient) GetPublicKey(ctx context.Context, in *GetPublicKeyReq, opts ...grpc.CallOption) (*GetPublicKeyRsp, error) {
-	out := new(GetPublicKeyRsp)
-	err := c.cc.Invoke(ctx, "/credential.UserCredentialValidator/GetPublicKey", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *userCredentialValidatorClient) LoginByUserId(ctx context.Context, in *LoginByUserIdReq, opts ...grpc.CallOption) (*LoginByUserIdRsp, error) {
@@ -76,8 +65,6 @@ func (c *userCredentialValidatorClient) RegisterUser(ctx context.Context, in *Re
 // All implementations must embed UnimplementedUserCredentialValidatorServer
 // for forward compatibility
 type UserCredentialValidatorServer interface {
-	// 获取一个public key
-	GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error)
 	// 尝试登陆的时候来验证密码是否正确
 	LoginByUserId(context.Context, *LoginByUserIdReq) (*LoginByUserIdRsp, error)
 	// 根据session ID检查登陆状态
@@ -91,9 +78,6 @@ type UserCredentialValidatorServer interface {
 type UnimplementedUserCredentialValidatorServer struct {
 }
 
-func (UnimplementedUserCredentialValidatorServer) GetPublicKey(context.Context, *GetPublicKeyReq) (*GetPublicKeyRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPublicKey not implemented")
-}
 func (UnimplementedUserCredentialValidatorServer) LoginByUserId(context.Context, *LoginByUserIdReq) (*LoginByUserIdRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginByUserId not implemented")
 }
@@ -115,24 +99,6 @@ type UnsafeUserCredentialValidatorServer interface {
 
 func RegisterUserCredentialValidatorServer(s grpc.ServiceRegistrar, srv UserCredentialValidatorServer) {
 	s.RegisterService(&UserCredentialValidator_ServiceDesc, srv)
-}
-
-func _UserCredentialValidator_GetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPublicKeyReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserCredentialValidatorServer).GetPublicKey(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/credential.UserCredentialValidator/GetPublicKey",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserCredentialValidatorServer).GetPublicKey(ctx, req.(*GetPublicKeyReq))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _UserCredentialValidator_LoginByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -196,10 +162,6 @@ var UserCredentialValidator_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "credential.UserCredentialValidator",
 	HandlerType: (*UserCredentialValidatorServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetPublicKey",
-			Handler:    _UserCredentialValidator_GetPublicKey_Handler,
-		},
 		{
 			MethodName: "LoginByUserId",
 			Handler:    _UserCredentialValidator_LoginByUserId_Handler,
