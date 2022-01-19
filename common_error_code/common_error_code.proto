@@ -28,8 +28,6 @@ enum ErrorCode {
   // 找不到用户数据
   ERR_FIND_USER = 10105;
 
-
-
   // Vcode 10200-10299
   // VCode不存在
   ERR_VCODE_NON_EXIST = 10200;
@@ -40,8 +38,13 @@ enum ErrorCode {
   // Token 不存在
   ERR_TOKEN_RESET_PWD_NON_EXIST = 10300;
 
+  // Session id 10400-10499
+  // 生成session id失败
+  ERR_GENERATE_SESSION_ID = 10400;
+
   // 内部错误，比如说服务器、网络连接。被调用方的错误
   ERR_INTERNAL_FAILURE = 19000;
+  ERR_OPERATION_FAILED = 19001;
 
   // 返回给前端部分，20000 - 29999
 }
